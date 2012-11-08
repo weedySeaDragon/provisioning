@@ -14,7 +14,7 @@ namespace :nginx do
     run "#{sudo} rm -f /etc/nginx/sites-enabled/default"
     restart
   end
-  after "provision:setup", "nginx:setup"
+  after "deploy:setup", "nginx:setup"
 
   %w[start stop restart].each do |command|
     desc "#{command} nginx"

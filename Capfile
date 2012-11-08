@@ -1,3 +1,8 @@
+load 'deploy'
+load 'deploy/assets'
+Dir['vendor/gems/*/recipes/*.rb','vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
+
+require 'bundler/capistrano'
 
 load "recipes/base"
 load "recipes/nginx"
@@ -14,9 +19,11 @@ set :application, "openfoodweb"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
+# set :current_path, deploy_to #why?
+# set :shared_path, deploy_to #why?
 
 set :scm, "git"
-set :repository, "git@github.com:openfoodweb/#{application}.git"
+set :repository, "git@github.com:eaterprises/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true

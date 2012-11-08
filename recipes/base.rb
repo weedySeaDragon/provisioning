@@ -16,5 +16,6 @@ namespace :provision do
   task :apt_update do
     run "#{sudo} apt-get -y update"
     run "#{sudo} apt-get -y install python-software-properties"
+    run "#{sudo} apt-get -y install libxslt-dev libxml2-dev"
   end
 end

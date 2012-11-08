@@ -7,7 +7,7 @@ namespace :check do
       exit
     end
   end
-  before "provision", "check:revision"
-  before "provision:migrations", "check:revision"
-  before "provision:cold", "check:revision"
+  # before "deploy", "check:revision"
+  # before "deploy:migrations", "check:revision"
+  # before "deploy:cold", "check:revision"
 end
