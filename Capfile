@@ -10,6 +10,7 @@ load "recipes/unicorn"
 load "recipes/postgresql"
 load "recipes/nodejs"
 load "recipes/rbenv"
+load "recipes/s3"
 load "recipes/check"
 
 server "192.168.33.10", :web, :app, :db, primary: true
