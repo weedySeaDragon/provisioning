@@ -1,4 +1,4 @@
-set_default(:s3_bucket, "openfoodweb_production")
+set_default(:s3_bucket, "openfoodweb_ec2")
 set_default(:s3_access_key_id) { Capistrano::CLI.password_prompt "S3 Access id for bucket: #{s3_bucket}" }
 set_default(:s3_secret_access_key) { Capistrano::CLI.password_prompt "S3 Access key for bucket: #{s3_bucket}" }
 
