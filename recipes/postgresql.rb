@@ -7,6 +7,8 @@ set_default(:heroku_app) { "buyfood" }
 namespace :postgresql do
   desc "Install the latest stable release of PostgreSQL."
   task :install, roles: :db, only: {primary: true} do
+    run "#{sudo} apt-get install language-pack-en-base"
+    run "#{sudo} dpkg-reconfigure locales"
     run %Q{#{sudo} update-locale LANG=en_AU.UTF-8 LC_ALL=en_AU.UTF-8}
     # `vagrant reload`
     run "#{sudo} add-apt-repository ppa:pitti/postgresql -y"
@@ -44,5 +46,7 @@ namespace :postgresql do
     puts "Backup url to download: #{backup_url}"
     run "curl -o latest.dump \"#{backup_url}\""
     run "pg_restore --verbose --clean --no-acl --no-owner -h #{postgresql_host} -U #{postgresql_user}  -d #{postgresql_database} latest.dump"
+
+    puts "TODO: cleanse data, and turn off analytics for non-prod environments"
   end
 end

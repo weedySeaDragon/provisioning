@@ -13,6 +13,8 @@ namespace :nginx do
     nginx_conf = "/etc/nginx"
     run "#{sudo} openssl req -new -nodes -keyout #{nginx_conf}/server.key -out #{nginx_conf}/server.csr -subj \"/C=AU/ST=Victoria/L=Melbourne/O=#{application}/OU=IT/CN=#{application}\""
     run "#{sudo} openssl x509 -req -days 365 -in #{nginx_conf}/server.csr -signkey #{nginx_conf}/server.key -out #{nginx_conf}/server.crt"
+    run "#{sudo} chmod 400 #{nginx_conf}/*.key #{nginx_conf}/*.crt"
+    run "#{sudo} chown root #{nginx_conf}/*.key #{nginx_conf}/*.crt"
 
     template "nginx_unicorn.erb", "/tmp/nginx_conf"
     run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-enabled/#{application}"
