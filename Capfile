@@ -29,7 +29,7 @@ set :branch, "master"
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
-ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "andy_ec2.pem")]
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "buyfood_test_ec2.pem")]
 puts ssh_options[:keys]
 
 after "deploy", "deploy:cleanup" # keep only the last 5 releases
