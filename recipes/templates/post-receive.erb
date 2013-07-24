@@ -1,0 +1,41 @@
+#!/bin/sh
+
+APP_ROOT=/home/<%= app_user %>/apps/<%= application %>/current
+SHARED_PATH=/home/<%= app_user %>/apps/<%= application %>/shared
+BUNDLE=/home/<%= app_user %>/.rbenv/shims/bundle
+
+cd $APP_ROOT || exit 1
+
+unset GIT_DIR
+NEWREF=$(cat /dev/stdin | cut -d ' ' -f 2)
+
+# Check out the new revision
+git reset --hard $NEWREF
+
+# Symlink shared files
+rm $APP_ROOT/config/database.yml
+ln -s $SHARED_PATH/config/database.yml $APP_ROOT/config/database.yml
+ln -s $SHARED_PATH/config/s3.yml $APP_ROOT/config/s3.yml
+
+# Install the required gems
+# Note: the 'LANG=en_US.UTF-8' is a fix for jquery-rails 1.0.17...fails even though server has correct locale setting
+LANG=en_US.UTF-8 $BUNDLE install --gemfile $APP_ROOT/Gemfile --path /home/<%= app_user %>/.gem --deployment --without development test
+
+# Update the DB schema
+$BUNDLE exec rake RAILS_ENV=production db:migrate
+
+# Note: Calling standard assets:precompile is overkill and chews up heaps of memory.
+#       Hence do steps one-by-one
+#echo Doing total bundle install thing
+#$BUNDLE exec rake RAILS_ENV=production assets:precompile RAILS_GROUPS=assets
+echo Doing asset:precompile:primary...
+$BUNDLE exec rake RAILS_ENV=production assets:precompile:primary RAILS_GROUPS=assets
+echo Doing asset:precompile:nondigest...
+$BUNDLE exec rake RAILS_ENV=production assets:precompile:nondigest RAILS_GROUPS=assets
+
+# Restart the rails process. The upgrade happens in place, no requests
+# should be dropped
+service unicorn_<%= application %> restart
+
+# Tell bugsnag about the deploy, keeps the error history clean
+#$BUNDLE exec rake RAILS_ENV=production bugsnag:deploy TO=production
