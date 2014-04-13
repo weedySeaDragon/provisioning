@@ -10,7 +10,7 @@ load "recipes/unicorn"
 load "recipes/postgresql"
 load "recipes/nodejs"
 load "recipes/rbenv"
-load "recipes/s3"
+#load "recipes/s3"
 load "recipes/check"
 
 server "192.168.33.10", :web, :app, :db, primary: true
@@ -20,7 +20,7 @@ set :install_user, "vagrant"
 set :app_user, "openfoodweb1"
 set :user, app_user
 set :application, "openfoodweb"
-set :s3_bucket, "ofn_staging_1"
+#set :s3_bucket, "ofn_staging_1"
 set :deploy_to, "/home/#{app_user}/apps/#{application}"
 set :deploy_key, "staging-deploy.pub"
 set :deploy_via, :remote_cache
