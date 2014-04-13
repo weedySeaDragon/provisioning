@@ -17,9 +17,9 @@ server "192.168.33.10", :web, :app, :db, primary: true
 # server "ec2-54-241-104-172.us-west-1.compute.amazonaws.com", :web, :app, :db, primary: true
 
 set :install_user, "vagrant"
-set :app_user, "openfoodweb1"
+set :app_user, "salishseatrading"
 set :user, app_user
-set :application, "openfoodweb"
+set :application, "salishseatrading-ofn"
 #set :s3_bucket, "ofn_staging_1"
 set :deploy_to, "/home/#{app_user}/apps/#{application}"
 set :deploy_key, "staging-deploy.pub"
@@ -27,7 +27,7 @@ set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "git"
-set :repository, "git@github.com:eaterprises/#{application}.git"
+set :repository, "git@github.com:weedySeaDragon/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true
